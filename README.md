@@ -1,6 +1,18 @@
 Helper to animate the `theme-color` meta tag using Web Animations.
 
+## Install
+
+Installing with Bower-
+
+    bower install rainbows
+
+Requires [Web Animations](http://caniuse.com/#feat=web-animation) or a [suitable polyfill](https://github.com/web-animations/web-animations-js).
+
 ## Usage
+
+```html
+<script src="bower_components/rainbows/rainbows.js"></script>
+```
 
 ```js
 
