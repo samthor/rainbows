@@ -17,40 +17,55 @@ var RColor = (function() {
   };
 
   function updateColor(raw) {
+    if (!raw) {
+      if (meta) {
+        meta.parentNode.removeChild(meta);
+        meta = null;
+      }
+      return;
+    }
     meta = meta || loadMeta();
     meta.content = raw;
   };
 
   var holder = document.createElement('div');
-  if (false) {
-    holder.style.height = '50px'
-    holder.style.width = '50px';
-    holder.style.position = 'fixed';
-    holder.style.right = 0;
-    holder.style.top = 0;
-  } else {
-    holder.style.visibility = 'hidden';
-    holder.style.display = 'none';
-  }
+  var defaultStyle = 'visibility: hidden; display: none';
+  holder.setAttribute('style', defaultStyle);
   window.addEventListener('load', function() {
     document.body.appendChild(holder);
   });
 
   var activeAnims = 0;
   function update() {
-    var s = window.getComputedStyle(holder);
-    updateColor(s.backgroundColor);
-    activeAnims && window.requestAnimationFrame(update);
+    if (activeAnims) {
+      var s = window.getComputedStyle(holder);
+      updateColor(s.backgroundColor);
+      window.requestAnimationFrame(update);
+    } else {
+      updateColor(holder.style.background);  // default uses background css
+    }
   }
 
   return {
     /**
+     * @param {boolean} enabled whether debug enabled
+     */
+    set debug(enabled) {
+      if (enabled) {
+        holder.setAttribute('style', 'width: 50px; height: 50px; ' +
+            'position: fixed; right: 0; top: 0')
+      } else {
+        holder.setAttribute('style', defaultStyle);
+      }
+    },
+
+    /**
      * Sets the default theme color while no animations are running.
      *
-     * @param {Object} v theme color to set as default
+     * @param {string|number} v theme color to set as default
      */
     set default(v) {
-      holder.style.background = v;
+      holder.style.background = '' + v;
       update();
     },
 

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="rainbows.js"></script>
+  <script src="rainbows.min.js"></script>
 </head>
 <body>
 
@@ -12,6 +12,8 @@
 <script>
 
 window.addEventListener('load', function() {
+  RColor.debug = true;
+
   // Animate forever. Steps aren't just 0 => 360, since Web Animations is smart
   // enough to modulo the values. Use 0 => 120 => 240 => 360.
   var steps = ['hsl(0, 80%, 50%)', 'hsl(120, 80%, 50%)', 'hsl(240, 80%, 50%)', 'hsl(360, 80%, 50%)'];
