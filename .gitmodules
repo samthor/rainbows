@@ -1,0 +1,3 @@
+[submodule "color2color"]
+	path = color2color
+	url = https://github.com/indyarmy/color2color.git
