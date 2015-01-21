@@ -1,0 +1,20 @@
+{
+  "name": "rainbows",
+  "main": "rainbows.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/samthor/rainbows",
+  "authors": [
+    "Sam Thorogood <sam.thorogood@gmail.com>"
+  ],
+  "description": "meta theme-color control library via Web Animations",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "theme-color",
+    "javascript",
+    "mobile",
+    "android"
+  ],
+  "license": "MIT"
+}
