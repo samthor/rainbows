@@ -6,12 +6,14 @@ Helper to animate the `theme-color` meta tag using Web Animations.
 
 RColor.default = 'pink';
 
-var anim = RColor.animate([{ background: 'red' }, { background: 'blue' }], { duration: 2000, iterations: 2 });
+var steps = [{ background: 'red' }, { background: 'blue' }];
+var anim = RColor.animate(steps, { duration: 2000, iterations: 2 });
 anim.onfinish = function() {
   console.info('done!');
 };
 
-var anim = RColor.animate(['rgb(255, 128, 0)', 'hsl(128, 80%, 100%)'], { duration: 1500, direction: 'reverse' });
+var steps = ['rgb(255, 128, 0)', 'hsl(128, 80%, 100%)'];
+var anim = RColor.animate(steps, { duration: 1500, direction: 'reverse' });
 window.setTimeout(function() {
   anim.pause();
   window.setTimeout(function() {
