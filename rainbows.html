@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="color2color/color2color.min.js"></script>
+</head>
+<body>
+
+<div id="display">
+</div>
+
+<script>
+
+var MetaColor = (function() {
+  var meta = null;
+  function updateColor(raw) {
+    if (meta == null) {
+      meta = document.querySelector('meta[name="theme-color"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        document.head.appendChild(meta);
+      }
+    }
+    meta.content = color2color(raw, 'hex');
+    return meta.content;
+  };
+
+  var holder = document.createElement('div');
+  holder.style.height = '50px'
+  holder.style.width = '50px';
+  holder.style.position = 'fixed';
+  holder.style.right = 0;
+  holder.style.top = 0;
+  document.body.appendChild(holder);
+
+  var activeAnims = 0;
+  function update() {
+    var s = window.getComputedStyle(holder);
+    updateColor(s.backgroundColor);
+    activeAnims && window.requestAnimationFrame(update);
+  }
+
+  return {
+    set default(v) {
+      holder.style.background = v;
+      update();
+    },
+    animate: function(steps, timing) {
+      steps = steps.map(function(x) {
+        if (typeof x == 'string') {
+          return {'background': x};
+        }
+        return x;
+      });
+
+      var anim = holder.animate(steps, timing);
+      ++activeAnims;
+
+      // TODO: fill {forwards,both} will mean that we continually call update()
+
+      // Steal anim.onfinish: run our own handler, and call whatever was set
+      // in user-space.
+      var _finish = null;
+      anim.onfinish = function() {
+        --activeAnims;
+        _finish && _finish();
+      };
+      Object.defineProperty(anim, 'onfinish', {
+        get: function() { return _finish },
+        set: function(v) { _finish = v; }
+      });
+
+      update();
+      return anim;
+    }
+  };
+}());
+
+window.addEventListener('load', function() {
+  // Animate forever. Steps aren't just 0 => 360, since Web Animations is smart
+  // enough to modulo the values. Use 0 => 120 => 240 => 360.
+  var steps = ['hsl(0, 80%, 50%)', 'hsl(120, 80%, 50%)', 'hsl(240, 80%, 50%)', 'hsl(360, 80%, 50%)'];
+  var rainbowAnim = MetaColor.animate(steps, { duration: 5000, iterations: Infinity });
+
+  var button = document.getElementById('btn-pauseplay');
+  button.addEventListener('click', function() {
+    if (rainbowAnim.playState == 'running') {
+      rainbowAnim.pause();
+      this.innerText = 'Play';
+    } else {
+      rainbowAnim.play();
+      this.innerText = 'Pause';
+    }
+  });
+
+  // The Fuzz!
+  var button = document.getElementById('btn-fuzz');
+  button.addEventListener('click', function() {
+    var steps = [
+      'red',
+      'blue'
+    ];
+    MetaColor.animate(steps, { duration: 500, iterations: 5, direction: 'alternate', easing: 'ease-in-out' });
+  });
+});
+
+</script>
+
+<button id="btn-fuzz">The Fuzz!</button>
+<button id="btn-pauseplay">Pause</button>
+
+</body>
+</html>
