@@ -1,4 +1,8 @@
 
+/**
+ * RColor allows control of theme-color via Web Animations (polyfill not
+ * included, see http://caniuse.com/#feat=web-animation for support).
+ */
 var RColor = (function() {
   var meta = null;
 
@@ -18,11 +22,16 @@ var RColor = (function() {
   };
 
   var holder = document.createElement('div');
-  holder.style.height = '50px'
-  holder.style.width = '50px';
-  holder.style.position = 'fixed';
-  holder.style.right = 0;
-  holder.style.top = 0;
+  if (false) {
+    holder.style.height = '50px'
+    holder.style.width = '50px';
+    holder.style.position = 'fixed';
+    holder.style.right = 0;
+    holder.style.top = 0;
+  } else {
+    holder.style.visibility = 'hidden';
+    holder.style.display = 'none';
+  }
   window.addEventListener('load', function() {
     document.body.appendChild(holder);
   });
@@ -35,10 +44,24 @@ var RColor = (function() {
   }
 
   return {
+    /**
+     * Sets the default theme color while no animations are running.
+     *
+     * @param {Object} v theme color to set as default
+     */
     set default(v) {
       holder.style.background = v;
       update();
     },
+
+    /**
+     * As per Element.animate() in Web Animations. Passed steps to animate
+     * between, and a timing object. The property used is 'background', or
+     * steps can be passed as simple objects, e.g.: ['red', 'blue'].
+     *
+     * @param {!Array.<!Object>} steps to animate
+     * @param {!Object} timing to use 
+     */
     animate: function(steps, timing) {
       steps = steps.map(function(x) {
         if (typeof x == 'string') {
@@ -69,3 +92,4 @@ var RColor = (function() {
     }
   };
 }());
+
