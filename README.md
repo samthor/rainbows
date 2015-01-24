@@ -1,8 +1,8 @@
-Helper to animate the `theme-color` meta tag using Web Animations.
+Helper to animate the `theme-color` meta tag using Web Animations. [Video](http://youtu.be/wolnA7rgHUM) or [demo](https://cdn.rawgit.com/samthor/rainbows/v0.1.1/rainbows.html) (Chrome 36+, Android only for now).
 
 ## Install
 
-Installing with Bower-
+Optional install with Bower:
 
     $ bower install rainbows
 
@@ -12,6 +12,12 @@ Requires [Web Animations](http://caniuse.com/#feat=web-animation) or a [suitable
 
 ```html
 <script src="bower_components/rainbows/rainbows.js"></script>
+```
+
+Or, if you'd like to just link to the CDN:
+
+```html
+<script src="https://cdn.rawgit.com/samthor/rainbows/v0.1.1/rainbows.html"></script>
 ```
 
 ```js
